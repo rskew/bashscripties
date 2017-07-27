@@ -1,0 +1,4 @@
+#! /bin/bash
+sudo modprobe -r snd-usb-audio
+sudo modprobe snd-usb-audio device_setup=0x01
+echo Can now turn on and use audio interface :\)
