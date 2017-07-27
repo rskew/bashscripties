@@ -1,5 +1,7 @@
 #! /bin/bash
 
+## Need to make sure /sys/class/backlight/intel_backlight/brightness is writable or run as root
+
 cd /sys/class/backlight/intel_backlight/
 
 current=$(cat ./actual_brightness)
