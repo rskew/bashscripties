@@ -1,6 +1,7 @@
 #! /bin/bash
 
-## Need to make /sys/class/backlight/intel_backlight/brightness writable or else run as root
+## Need to make /sys/class/backlight/intel_backlight/brightness
+##  writable, run as root or add brightness file to sudoers NOPASSWRD
 
 cd /sys/class/backlight/intel_backlight/ 
 
