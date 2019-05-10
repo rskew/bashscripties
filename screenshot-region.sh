@@ -1,5 +1,7 @@
+#/usr/bin/env bash
+
 MAXNUM=0
-cd '/home/rowan/'
+cd '/home/rowan/screenshots/'
 for i in screenshot*.png;
     do echo $i;
     NUM=$(echo $i | tr -dc '0-9');
@@ -9,4 +11,4 @@ for i in screenshot*.png;
     fi;
 done;
 NEWNUM=$(($MAXNUM+1))
-import "/home/rowan/screenshot$NEWNUM.png"
+import "/home/rowan/screenshots/screenshot$NEWNUM.png"

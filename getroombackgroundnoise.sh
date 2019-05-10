@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 ## Records the room ambient noise amplitude through the defualt microphone
 

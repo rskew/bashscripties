@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 ## Usage on system using systemd:
 ##  systemd-run --user --on-calendar="Mon 2017-05-08 23:53:00 AEST" wakeup.sh
