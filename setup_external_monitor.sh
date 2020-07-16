@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# Automatically setup external monitor
+# Automatically setup external monitor, assuming one configuration per set 
+# of screens attached (e.g. one configuration for LVDA+HDMI).
+# Use `arandr` to find a configuration and generate the script line.
 
-POSITION_EXT_TO_LAPPY="left-of"
+POSITION_EXT_TO_LAPPY="right-of"
 #POSITION_EXT_TO_LAPPY="above"
 
 is_vga_connected=`DISPLAY=:0 xrandr | sed -n '/VGA-1 connected/p'`
@@ -24,7 +26,8 @@ elif [ -n "$is_dp1_connected" ]; then
   #DISPLAY=:0 xrandr --output DP-1 --auto --"$POSITION_EXT_TO_LAPPY" LVDS-1 --primary --mode "3840x2160"
   DISPLAY=:0 xrandr --output DP-1 --auto --"$POSITION_EXT_TO_LAPPY" LVDS-1 --primary
 elif [ -n "$is_hdmi1_connected" ]; then
-  DISPLAY=:0 xrandr --output HDMI-1 --auto --"$POSITION_EXT_TO_LAPPY" LVDS-1 --primary
+  #DISPLAY=:0 xrandr --output HDMI-1 --auto --"$POSITION_EXT_TO_LAPPY" LVDS-1 --primary
+  DISPLAY=:0 xrandr --output LVDS-1 --mode 1600x900 --pos 0x150 --rotate normal --output VGA-1 --off --output HDMI-1 --primary --mode 1680x1050 --pos 1600x0 --rotate normal --output DP-1 --off
   #DISPLAY=:0 xrandr --output HDMI-1 --auto --"$POSITION_EXT_TO_LAPPY" LVDS-1 --primary --mode "800x600"
 elif [ -n "$is_dvi1_connected" ]; then
   DISPLAY=:0 xrandr --output DVI-I-1-1 --auto --"$POSITION_EXT_TO_LAPPY" LVDS-1 --primary --rotate normal
