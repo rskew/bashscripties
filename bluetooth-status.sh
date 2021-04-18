@@ -23,6 +23,11 @@ else
     HEADSET_CONNECTED=FALSE
 fi
 
+KEYBOARD_MAC_ADDRESS=F5:34:1F:49:35:D4
+if [[ $(bluetoothctl info $KEYBOARD_MAC_ADDRESS | grep "Connected") == *"Connected: yes" ]]; then
+    echo kbd
+fi
+
 # >>> pactl list | grep 'Active Profile'
 # Active Profile: output:analog-stereo+input:analog-stereo
 # Active Profile: a2dp_sink_sbc

@@ -3,38 +3,39 @@
 # of screens attached (e.g. one configuration for LVDA+HDMI).
 # Use `arandr` to find a configuration and generate the script line.
 
-POSITION_EXT_TO_LAPPY="right-of"
-#POSITION_EXT_TO_LAPPY="above"
+#POSITION_EXT_TO_LAPPY="right-of"
+POSITION_EXT_TO_LAPPY="above"
 
 is_vga_connected=`DISPLAY=:0 xrandr | sed -n '/VGA-1 connected/p'`
-
-is_dp1_connected=`DISPLAY=:0 xrandr | sed -n '/DP-1 connected/p'`
+is_dp1_connected=`DISPLAY=:0 xrandr | sed -n '/[^e]DP-1 connected/p'`
+is_dp11_connected=`DISPLAY=:0 xrandr | sed -n '/DP-1-1 connected/p'`
+is_dp22_connected=`DISPLAY=:0 xrandr | sed -n '/DP-2-2 connected/p'`
 is_hdmi1_connected=`DISPLAY=:0 xrandr | sed -n '/HDMI-1 connected/p'`
-
 is_dvi1_connected=`DISPLAY=:0 xrandr | sed -n '/DVI-I-1-1 connected/p'`
 is_dvi2_connected=`DISPLAY=:0 xrandr | sed -n '/DVI-I-2-2 connected/p'`
 
 if [ -n "$is_vga_connected" ]; then
   xrandr --newmode "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -hsync +vsync
   xrandr --addmode VGA-1 1680x1050_60.00
-  DISPLAY=:0 xrandr --output VGA-1 --auto --"$POSITION_EXT_TO_LAPPY" LVDS-1 --primary
+  DISPLAY=:0 xrandr --output VGA-1 --auto --"$POSITION_EXT_TO_LAPPY" eDP-1 --primary
 elif [ -n "$is_dp1_connected" ]; then
-  # for biiiiig screen at work:
-  #xrandr --newmode "3840x2160_30.00"  338.75  3840 4080 4488 5136  2160 2163 2168 2200 -hsync +vsync
-  #xrandr --addmode DP-1 3840x2160_30.00
-  #DISPLAY=:0 xrandr --output DP-1 --auto --"$POSITION_EXT_TO_LAPPY" LVDS-1 --primary --mode "3840x2160_30.00" --verbose
-  #DISPLAY=:0 xrandr --output DP-1 --auto --"$POSITION_EXT_TO_LAPPY" LVDS-1 --primary --mode "3840x2160"
-  DISPLAY=:0 xrandr --output DP-1 --auto --"$POSITION_EXT_TO_LAPPY" LVDS-1 --primary
+  DISPLAY=:0 xrandr --output DP-1 --auto --"$POSITION_EXT_TO_LAPPY" eDP-1 --primary
+elif [ -n "$is_dp11_connected" ]; then
+  DISPLAY=:0 xrandr --output DP-1-1 --auto --"$POSITION_EXT_TO_LAPPY" eDP-1 --primary
+elif [ -n "$is_dp22_connected" ]; then
+    echo fisk
+  DISPLAY=:0 xrandr --output DP-2-2 --auto --"$POSITION_EXT_TO_LAPPY" eDP-1 --primary
 elif [ -n "$is_hdmi1_connected" ]; then
-  #DISPLAY=:0 xrandr --output HDMI-1 --auto --"$POSITION_EXT_TO_LAPPY" LVDS-1 --primary
-  DISPLAY=:0 xrandr --output LVDS-1 --mode 1600x900 --pos 0x150 --rotate normal --output VGA-1 --off --output HDMI-1 --primary --mode 1680x1050 --pos 1600x0 --rotate normal --output DP-1 --off
-  #DISPLAY=:0 xrandr --output HDMI-1 --auto --"$POSITION_EXT_TO_LAPPY" LVDS-1 --primary --mode "800x600"
+  DISPLAY=:0 xrandr --output eDP-1 --rotate normal --output HDMI-1 --primary --mode 1680x1050 --rotate normal --"$POSITION_EXT_TO_LAPPY" eDP-1
 elif [ -n "$is_dvi1_connected" ]; then
-  DISPLAY=:0 xrandr --output DVI-I-1-1 --auto --"$POSITION_EXT_TO_LAPPY" LVDS-1 --primary --rotate normal
+  DISPLAY=:0 xrandr --output DVI-I-1-1 --auto --"$POSITION_EXT_TO_LAPPY" eDP-1 --primary --rotate normal
   DISPLAY=:0 xrandr --output DVI-I-2-2 --auto  --"$POSITION_EXT_TO_LAPPY" DVI-I-1-1 --rotate left
 else
   DISPLAY=:0 xrandr --output VGA-1 --off
   DISPLAY=:0 xrandr --output DP-1 --off
+  DISPLAY=:0 xrandr --output DP-1-1 --off
+  DISPLAY=:0 xrandr --output DP-2-1 --off
+  DISPLAY=:0 xrandr --output DP-2-2 --off
   DISPLAY=:0 xrandr --output HDMI-1 --off
   DISPLAY=:0 xrandr --output DVI-I-1-1 --off
   DISPLAY=:0 xrandr --output DVI-I-2-2 --off
@@ -42,3 +43,9 @@ fi
 
 # Reset the wallpaper
 ~/.fehbg
+
+# Keep wacom sensor mapped to laptop screen
+# https://github.com/linuxwacom/xf86-input-wacom/wiki/Dual-and-Multi-Monitor-Set-Up
+xsetwacom set "Wacom Pen and multitouch sensor Pen stylus" MapToOutput eDP-1
+xsetwacom set "Wacom Pen and multitouch sensor Pen eraser" MapToOutput eDP-1
+xsetwacom set "Wacom Pen and multitouch sensor Finger touch" MapToOutput eDP-1

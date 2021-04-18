@@ -1,6 +1,6 @@
 #!/bin/sh
 
-essid=`nmcli | awk '/wlp3s0: connected to/ {print $4}'`
+essid=`nmcli | awk '/wlp4s0: connected to/ {print $4}'`
 
 echo $essid
 
